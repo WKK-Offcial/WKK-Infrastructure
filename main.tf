@@ -23,7 +23,7 @@ resource "aws_key_pair" "ec2_ssh_key" {
 }
 
 resource "aws_instance" "boi_bot" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.ec2_ami.id
   instance_type = "t3.micro"
   key_name      = aws_key_pair.ec2_ssh_key.key_name
   user_data     = <<FILE
@@ -39,16 +39,12 @@ resource "aws_instance" "boi_bot" {
   }
 }
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "ec2_ami" {
   most_recent = true
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    values = ["amzn2-ami-kernel-*-x86_64-gp2"]
   }
 }

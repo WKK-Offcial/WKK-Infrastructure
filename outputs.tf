@@ -3,5 +3,5 @@ output "instance_ip_addr" {
 }
 
 output "aws_private_key" {
-  value = tls_private_key.boi_bot.private_key_pem
+  value = tls_private_key.ec2_ssh_key.private_key_pem
 }

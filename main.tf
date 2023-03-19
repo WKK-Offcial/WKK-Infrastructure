@@ -26,7 +26,7 @@ resource "aws_instance" "boi_bot" {
   ami                    = data.aws_ami.ec2_ami.id
   instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.public.id]
-  key_name               = aws_key_pair.ec2_ssh_key.key_name
+  key_name               = "Wkk-bot-key"
   user_data              = <<FILE
   #!/bin/bash
   IFS=',' read -r -a ssh_array <<< "${join(",", var.ec2_ssh_public_keys)}"

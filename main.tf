@@ -13,15 +13,6 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-resource "tls_private_key" "ec2_ssh_key" {
-  algorithm = "RSA"
-}
-
-resource "aws_key_pair" "ec2_ssh_key" {
-  key_name   = "ec2_ssh_key"
-  public_key = tls_private_key.ec2_ssh_key.public_key_openssh
-}
-
 resource "aws_instance" "boi_bot" {
   ami                    = data.aws_ami.ec2_ami.id
   instance_type          = "t3.micro"

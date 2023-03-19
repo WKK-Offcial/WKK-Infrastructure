@@ -23,11 +23,11 @@ resource "aws_key_pair" "ec2_ssh_key" {
 }
 
 resource "aws_instance" "boi_bot" {
-  ami           = data.aws_ami.ec2_ami.id
-  instance_type = "t3.micro"
+  ami                    = data.aws_ami.ec2_ami.id
+  instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.public.id]
-  key_name      = aws_key_pair.ec2_ssh_key.key_name
-  user_data     = <<FILE
+  key_name               = aws_key_pair.ec2_ssh_key.key_name
+  user_data              = <<FILE
   #!/bin/bash
   IFS=',' read -r -a ssh_array <<< "${join(",", var.ec2_ssh_public_keys)}"
   for ssh_key in "$${ssh_array[@]}"; do
@@ -42,27 +42,27 @@ resource "aws_instance" "boi_bot" {
 
 
 resource "aws_security_group" "public" {
-  name = "wkk-${var.infra_env}-public-sg"
+  name        = "wkk-public-sg"
   description = "Public internet access"
-  vpc_id = "vpc-0f7b4b5cc35a21542" #id of default vpc
- 
+  vpc_id      = "vpc-0f7b4b5cc35a21542" #id of default vpc
+
   tags = {
-    Name        = "wkk-${var.infra_env}-public-sg"
-    Role        = "public"
-    ManagedBy   = "terraform"
+    Name      = "wkk-public-sg"
+    Role      = "public"
+    ManagedBy = "terraform"
   }
 }
- 
+
 resource "aws_security_group_rule" "public_out" {
   type        = "egress"
   from_port   = 0
   to_port     = 0
   protocol    = "-1"
   cidr_blocks = ["0.0.0.0/0"]
- 
+
   security_group_id = aws_security_group.public.id
 }
- 
+
 resource "aws_security_group_rule" "public_in_ssh" {
   type              = "ingress"
   from_port         = 22
@@ -71,7 +71,7 @@ resource "aws_security_group_rule" "public_in_ssh" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.public.id
 }
- 
+
 resource "aws_security_group_rule" "public_in_http" {
   type              = "ingress"
   from_port         = 80
@@ -80,7 +80,7 @@ resource "aws_security_group_rule" "public_in_http" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.public.id
 }
- 
+
 resource "aws_security_group_rule" "public_in_https" {
   type              = "ingress"
   from_port         = 443

@@ -44,7 +44,7 @@ resource "aws_instance" "boi_bot" {
 resource "aws_security_group" "public" {
   name = "wkk-${var.infra_env}-public-sg"
   description = "Public internet access"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = "vpc-0f7b4b5cc35a21542" #id of default vpc
  
   tags = {
     Name        = "wkk-${var.infra_env}-public-sg"
